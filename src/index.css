@@ -1,0 +1,102 @@
+:root {
+  --bg-dark: #07040d;
+  --bg-dark-rgb: 7, 4, 13;
+  --bg-card: rgba(15, 11, 26, 0.65);
+  --bg-card-hover: rgba(22, 16, 38, 0.85);
+  --primary-purple: #7C3AED;
+  --primary-pink: #EC4899;
+  --primary-grad: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);
+  --accent-grad: linear-gradient(135deg, #A78BFA 0%, #EC4899 100%);
+  --border-color: rgba(124, 58, 237, 0.15);
+  --border-hover: rgba(167, 139, 250, 0.35);
+  --text-white: #FFFFFF;
+  --text-gray: #94A3B8;
+  --text-lavender: #C084FC;
+  --text-muted: #64748B;
+  
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+  --font-sec: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  font-family: var(--font-main);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.6);
+}
+
+/* Layout container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+/* Smooth glass effect helper */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  box-shadow: 0 10px 30px -10px rgba(124, 58, 237, 0.25);
+}
+
+/* Text Gradients */
+.text-gradient {
+  background: var(--primary-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-accent-gradient {
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
