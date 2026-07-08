@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Play, Camera, Video, Users, CheckCircle, Calendar, Search,
   Star, MapPin, ArrowRight, Coins, ChevronRight, Menu, X,
@@ -7,8 +7,19 @@ import {
 } from 'lucide-react';
 import './App.css';
 
+const validPages = new Set(['home', 'production', 'booking', 'blog', 'crew', 'how-it-works', 'help']);
+
+const getPageFromHash = () => {
+  if (typeof window === 'undefined') {
+    return 'home';
+  }
+
+  const hash = window.location.hash.slice(1);
+  return validPages.has(hash) ? hash : 'home';
+};
+
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState(getPageFromHash);
   const [activeHeroTab, setActiveHeroTab] = useState('studios');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [emailSubscribed, setEmailSubscribed] = useState(false);
@@ -69,13 +80,37 @@ function App() {
   const [activeHowTab, setActiveHowTab] = useState('All');
   const [hostEarnings, setHostEarnings] = useState(120000);
 
+  useEffect(() => {
+    const syncPageFromHash = () => {
+      setCurrentPage(getPageFromHash());
+    };
+
+    syncPageFromHash();
+    window.addEventListener('hashchange', syncPageFromHash);
+
+    return () => {
+      window.removeEventListener('hashchange', syncPageFromHash);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const nextHash = `#${currentPage}`;
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(null, '', nextHash);
+    }
+  }, [currentPage]);
+
   // Sample data for interactive search/filtering
   const studios = [
     {
       id: 1,
-      title: "Green Screen Studio",
-      image: "/green_screen_studio.png",
-      location: "Andheri West, Mumbai",
+      title: "GreenBox Studio",
+      image: "/public/greenbox.jpg",
+      location: "Guindy, Chennai · 1.3 km away",
       specs: "1200 sq.ft • 12+ Lights • 30+ Crew",
       rating: "4.9",
       reviews: "48 reviews",
@@ -85,9 +120,9 @@ function App() {
     },
     {
       id: 2,
-      title: "Podcast & Talkshow Studio",
+      title: "ProVoice Pod Studio",
       image: "/podcast_studio.png",
-      location: "Bandra West, Mumbai",
+      location: "Perungudi, Chennai · 0.8 km away",
       specs: "800 sq.ft • 4+ Mics • Full Setup",
       rating: "4.8",
       reviews: "32 reviews",
@@ -97,9 +132,9 @@ function App() {
     },
     {
       id: 3,
-      title: "Cozy Living Room Set Studio",
+      title: "AK Production Hub",
       image: "/living_room_studio.png",
-      location: "Goregaon East, Mumbai",
+      location: "Adyar, Chennai · 2.1 km away",
       specs: "1500 sq.ft • Natural Light • Prop Set",
       rating: "4.9",
       reviews: "60 reviews",
@@ -112,8 +147,8 @@ function App() {
   const equipment = [
     {
       id: 1,
-      title: "Sony FX6 Cinema Camera",
-      image: "/cinema_camera.png",
+      title: "Sony FX3 Cinema Camera",
+      image: "/public/sony_fx3.jpg",
       specs: "Full-frame 4K, 120fps, Dual ISO",
       price: "₹5,000/day",
       category: "Cameras",
@@ -122,7 +157,7 @@ function App() {
     {
       id: 2,
       title: "Sony A7S III Camera Kit",
-      image: "/cinema_camera.png",
+      image: "/public/dji_ronin.png",
       specs: "12MP Full-Frame, 4K 120p, Gimbal ready",
       price: "₹3,500/day",
       category: "Cameras",
@@ -131,7 +166,7 @@ function App() {
     {
       id: 3,
       title: "Canon EOS R5 RF-Lens Kit",
-      image: "/cinema_camera.png",
+      image: "/public/canon.jpg",
       specs: "8K Video, 45MP Stills, RF 24-70mm lens",
       price: "₹4,000/day",
       category: "Cameras",
@@ -140,7 +175,7 @@ function App() {
     {
       id: 4,
       title: "ARRI Alexa Mini LF",
-      image: "/cinema_camera.png",
+      image: "/public/Red_digital.jpg",
       specs: "Large Format Cinema Camera, PL Mount",
       price: "₹25,000/day",
       category: "Cameras",
@@ -365,27 +400,27 @@ function App() {
         <div className="booking-steps-section">
           <div className="steps-header">
             <span className="section-badge bg-orange">HOW IT WORKS</span>
-            <h2>Book a Studio in <span className="text-gradient-orange">4 Simple Steps</span></h2>
+            {/* <h2>Book a Studio in <span className="text-gradient-orange">4 Simple Steps</span></h2> */}
             <p>From discovery to confirmed booking — faster than ordering food delivery.</p>
           </div>
           <div className="booking-steps-grid-4">
             <div className="step-card-alt">
-              <div className="step-badge-num">1</div>
+              <div className="feat-icon-box orange">📍</div>
               <h4>Search Location</h4>
               <p>Filter by location, size, capacity, price and specs.</p>
             </div>
             <div className="step-card-alt">
-              <div className="step-badge-num">2</div>
+              <div className="feat-icon-box orange">🎬</div>
               <h4>Select Studio</h4>
               <p>View photos, amenities, reviews, transparent pricing.</p>
             </div>
             <div className="step-card-alt">
-              <div className="step-badge-num">3</div>
+              <div className="feat-icon-box orange">📅</div>
               <h4>Choose Time</h4>
               <p>Pick your slot and see live availability.</p>
             </div>
             <div className="step-card-alt">
-              <div className="step-badge-num">4</div>
+              <div className="feat-icon-box orange">🎉</div>
               <h4>Confirm Booking</h4>
               <p>Pay securely and receive instant confirmation.</p>
             </div>
@@ -442,15 +477,15 @@ function App() {
         {/* STATS BAR */}
         <div className="booking-stats-row glass">
           <div className="stat-unit">
-            <h3>500+</h3>
+            <h3 style={{ color: 'orange' }}>500+</h3>
             <p>Verified studios across cities</p>
           </div>
           <div className="stat-unit">
-            <h3>15,000+</h3>
+            <h3 style={{ color: 'green' }}>15,000+</h3>
             <p>Bookings completed</p>
           </div>
           <div className="stat-unit">
-            <h3>4.9★</h3>
+            <h3 style={{ color: 'purple' }}>4.9★</h3>
             <p>Average platform rating</p>
           </div>
         </div>
@@ -1604,7 +1639,7 @@ function App() {
 
           <div className="latest-articles-grid-6">
             <div className="latest-article-card glass">
-              <div className="card-img-placeholder orange-bg">
+              <div className="card-img-placeholder orange-bg gradient">
                 <span className="card-cat-badge">Filmmaking</span>
               </div>
               <div className="card-content">
@@ -4779,9 +4814,9 @@ function App() {
     ];
 
     const steps = [
-      { num: "1", title: "Search & Filter", desc: "Browse through portfolios, rates, and reviews of verified crew members." },
-      { num: "2", title: "Submit Offer & Escrow", desc: "Send a booking request and secure the daily rate in ZO1 escrow." },
-      { num: "3", title: "Complete & Release", desc: "Your shoot goes smoothly, and funds are released after crew completes the day." }
+      { num: "🔍", title: "Search & Filter", desc: "Browse through portfolios, rates, and reviews of verified crew members." },
+      { num: "🖋️", title: "Submit Offer & Escrow", desc: "Send a booking request and secure the daily rate in ZO1 escrow." },
+      { num: "✅", title: "Complete & Release", desc: "Your shoot goes smoothly, and funds are released after crew completes the day." }
     ];
 
     const advantages = [
